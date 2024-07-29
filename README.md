@@ -17,10 +17,11 @@ The model is based on the VGG16 architecture, pretrained on the ImageNet dataset
 - tensorflow
 - opencv-python (cv2)
 - glob
+- requests
 
 Install the required packages using pip:
 ```bash
-pip install pandas numpy seaborn matplotlib tensorflow opencv-python glob
+pip install pandas numpy seaborn matplotlib tensorflow opencv-python glob requests
 ```
 ## Code Explanation
 
@@ -31,9 +32,12 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import tensorflow as tf
+from tensorflow.keras.preprocessing import image
 import random
 from cv2 import resize
 from glob import glob
+import requests
+from io import BytesIO
 ```
 
 Load and Prepare Dataset:

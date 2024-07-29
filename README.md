@@ -193,8 +193,86 @@ for images, labels in val_ds.take(1):
         plt.gca().axes.xaxis.set_ticklabels([])
 ```
 
+Using the Model for prediction on local images:
+```bash
+#testing
+img_path = 'Faulty_solar_panel/test_images/test_1.png'
+
+# Load the image with the target size
+img_height = 244
+img_width = 244
+img = image.load_img(img_path, target_size=(img_height, img_width))
+
+# Convert the image to a numpy array
+img_array = image.img_to_array(img)
+
+# Add an extra dimension to the image (required for model input)
+img_array = np.expand_dims(img_array, axis=0)
+
+# Preprocess the image using VGG16's preprocess_input function
+img_array = tf.keras.applications.vgg16.preprocess_input(img_array)
+
+# Predict the class using the model
+predictions = model.predict(img_array)
+
+# Get the predicted class
+predicted_class = np.argmax(predictions, axis=1)
+
+# Map the predicted class index to the class label
+predicted_label = class_names[predicted_class[0]]
+
+# Print the predicted label
+print(f"Predicted label: {predicted_label}")
+
+# Plot the image with the predicted label
+plt.imshow(image.array_to_img(img_array[0]))
+plt.title(f"Predicted: {predicted_label}")
+plt.axis("off")
+plt.show()
+```
+
+Using the Model for prediction on Web-sourced images:
+```bash
+# Define the URL of the image
+img_url ='https://www.yoururl.com/faulty_image.jpg'
+
+# Download the image
+response = requests.get(img_url)
+# Load the image with the target size
+img_height = 244
+img_width = 244
+img = image.load_img(BytesIO(response.content), target_size=(img_height, img_width))
+
+# Convert the image to a numpy array
+img_array = image.img_to_array(img)
+
+# Add an extra dimension to the image (required for model input)
+img_array = np.expand_dims(img_array, axis=0)
+
+# Preprocess the image using VGG16's preprocess_input function
+img_array = tf.keras.applications.vgg16.preprocess_input(img_array)
+
+# Predict the class using the model
+predictions = model.predict(img_array)
+
+# Get the predicted class
+predicted_class = np.argmax(predictions, axis=1)
+
+# Map the predicted class index to the class label
+predicted_label = class_names[predicted_class[0]]
+
+# Print the predicted label
+print(f"Predicted label: {predicted_label}")
+
+# Plot the image with the predicted label
+plt.imshow(image.array_to_img(img_array[0]))
+plt.title(f"Predicted: {predicted_label}")
+plt.axis("off")
+plt.show()
+```
+
 ## Conclusion
-This project provides a comprehensive approach to classify the state of solar panels using a VGG16-based model. The model is trained and fine-tuned on a dataset of labeled images, achieving a satisfactory level of accuracy. The project includes data preparation, model definition, training, fine-tuning, evaluation, and visualization of results.
+This project provides a comprehensive approach to classify the state of solar panels using a VGG16-based model. The model is trained and fine-tuned on a dataset of labeled images, achieving a satisfactory level of accuracy. The project includes data preparation, model definition, training, fine-tuning, evaluation, visualization of results and using the model for prediction.
 
 
 
